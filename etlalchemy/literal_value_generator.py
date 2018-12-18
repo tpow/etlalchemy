@@ -21,6 +21,12 @@ def _generate_literal_value_for_csv(value, dialect):
         else:
             value = value.replace('"', '""')
             return "\"%s\"" % value
+    elif isinstance(value, six.binary_type):
+        if dialect_name in ['sqlite', 'mssql']:
+            # No support for 'quote' enclosed strings
+            return "%s" % value
+        else:
+            return "\"%s\"" % value
     elif value is None:
         return "NULL"
     elif isinstance(value, bool):
@@ -88,6 +94,8 @@ def _generate_literal_value(value, dialect):
     dialect_name = dialect.name.lower()
     if isinstance(value, six.string_types):
         value = value.replace("'", "''")
+        return "'%s'" % value
+    elif isinstance(value, six.binary_type):
         return "'%s'" % value
     elif value is None:
         return "NULL"
