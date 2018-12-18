@@ -1,8 +1,8 @@
-from etlalchemy_exceptions import DBApiNotFound
-from sqlalchemy_utils import database_exists, create_database, drop_database
-from sqlalchemy import create_engine, MetaData
 # import dill
 import logging
+from sqlalchemy import create_engine, MetaData
+from sqlalchemy_utils import database_exists, create_database, drop_database
+from .etlalchemy_exceptions import DBApiNotFound
 
 
 class ETLAlchemyTarget():

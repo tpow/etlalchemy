@@ -1,16 +1,20 @@
-import shutil
-import decimal
 import datetime
+import decimal
+import six
 # Find the best implementation available on this platform
 try:
     from cStringIO import StringIO
-except:
-    from StringIO import StringIO
+except ImportError:
+    try:
+        from StringIO import StringIO
+    except ImportError:
+        from io import StringIO
+
 
 def _generate_literal_value_for_csv(value, dialect):
     dialect_name = dialect.name.lower()
     
-    if isinstance(value, basestring):
+    if isinstance(value, six.string_types):
         if dialect_name in ['sqlite', 'mssql']:
             # No support for 'quote' enclosed strings
             return "%s" % value
@@ -21,7 +25,9 @@ def _generate_literal_value_for_csv(value, dialect):
         return "NULL"
     elif isinstance(value, bool):
         return "%s" % int(value)
-    elif isinstance(value, (float, int, long)):
+    elif isinstance(value, float):
+        return "%s" % value
+    elif isinstance(value, six.integer_types):
         return "%s" % value
     elif isinstance(value, decimal.Decimal):
         return str(value)
@@ -80,7 +86,7 @@ def _generate_literal_value_for_csv(value, dialect):
 
 def _generate_literal_value(value, dialect):
     dialect_name = dialect.name.lower()
-    if isinstance(value, basestring):
+    if isinstance(value, six.string_types):
         value = value.replace("'", "''")
         return "'%s'" % value
     elif value is None:
