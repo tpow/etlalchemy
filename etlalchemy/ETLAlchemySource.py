@@ -218,10 +218,10 @@ class ETLAlchemySource():
                     # Update varchar(size)
                     if len(data) > max_data_length:
                         max_data_length = len(data)
-                    if isinstance(row[idx], unicode):
-                        row[idx] = row[idx].encode('utf-8', 'ignore')
-                    else:
-                        row[idx] = row[idx].decode('utf-8', 'ignore').encode('utf-8')
+                    #if isinstance(row[idx], unicode):
+                    #    row[idx] = row[idx].encode('utf-8', 'ignore')
+                    #else:
+                    #    row[idx] = row[idx].decode('utf-8', 'ignore').encode('utf-8')
             if self.compress_varchar:
                 # Let's reduce the "n" in VARCHAR(n) to a power of 2
                 if max_data_length > 0:
@@ -264,8 +264,8 @@ class ETLAlchemySource():
                             column.name, str(varchar_length)))
                 if data is not None:
                     null = False
-                    if isinstance(row[idx], unicode):
-                        row[idx] = row[idx].encode('utf-8', 'ignore')
+                    #if isinstance(row[idx], unicode):
+                    #    row[idx] = row[idx].encode('utf-8', 'ignore')
                 #if row[idx]:
                 #    row[idx] = row[idx].decode('utf-8', 'ignore')
 
